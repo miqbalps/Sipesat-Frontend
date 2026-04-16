@@ -33,7 +33,7 @@ export default function LoginPage({ onLogin, isLoading }) {
           </div>
 
           <CardHeader className="space-y-2 relative z-10">
-            <CardTitle className="text-xl">Masuk</CardTitle>
+            <CardTitle className="text-xl text-center">Masuk</CardTitle>
             <CardDescription>Gunakan Access Code untuk melanjutkan</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 relative z-10">

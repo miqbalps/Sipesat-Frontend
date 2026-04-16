@@ -54,8 +54,8 @@ export default function SignupPage() {
                 </div>
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">Daftar Akun</h1>
-                <p className="text-sm text-muted-foreground">Masyarakat Bandung</p>
+                <h1 className="text-3xl font-bold text-foreground">SIPESAT</h1>
+                <p className="text-sm text-muted-foreground">Sistem Informasi Pelaporan Sampah Terpadu</p>
               </div>
             </div>
 
@@ -66,8 +66,8 @@ export default function SignupPage() {
               </div>
 
               <CardHeader className="space-y-2 relative z-10">
-                <CardTitle className="text-xl">Buat Akun Baru</CardTitle>
-                <CardDescription>Masukkan nama lengkap Anda</CardDescription>
+                <CardTitle className="text-xl text-center">Buat Akun Baru</CardTitle>
+                <CardDescription>Daftar sebagai masyarakat</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 relative z-10">
                 <div className="space-y-2">
