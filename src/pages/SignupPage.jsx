@@ -35,7 +35,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-gray-50 via-white to-gray-50 px-4 py-8">
+    <div className="max-h-screen flex flex-col items-center justify-center bg-linear-to-br from-gray-50 via-white to-gray-50 px-4 py-8">
       <div className="w-full max-w-sm space-y-6">
         {!result ? (
           <>
