@@ -1,3 +1,8 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
 # Logs
 logs
 *.log
@@ -7,10 +12,17 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node
 node_modules
+npm-shrinkwrap.json
+
+# Build outputs
 dist
 dist-ssr
 *.local
+build
+.next
+out
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +34,27 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Vite
+.vite/
+
+# Testing
+.vitest/
+.nyc_output/
+coverage/
+
+# Temporary
+*.tmp
+*.temp
+.tmp/
+tmp/
+
+# Package managers (optional - uncomment to commit lock files)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+# bun.lockb
+
+# Misc
+README.md
+eslint.config.js

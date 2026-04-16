@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, UserPlus } from 'lucide-react';
+import { Check, ChevronLeft, Copy, User, Leaf } from 'lucide-react';
 import { signupMasyarakat } from '../lib/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -11,6 +11,8 @@ export default function SignupPage() {
   const [name, setName] = useState('');
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [copied, setCopied] = useState(false);
 
   const canSubmit = useMemo(() => name.trim().length > 0 && !isLoading, [name, isLoading]);
 
@@ -26,64 +28,138 @@ export default function SignupPage() {
     }
   }
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(result.access_code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="min-h-full bg-gradient-to-b from-brand-50 to-white">
-      <div className="mx-auto flex min-h-full max-w-6xl items-center justify-center px-4 py-10">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white">
-                <UserPlus className="h-5 w-5" />
-              </span>
-              Daftar Masyarakat
-            </CardTitle>
-            <CardDescription>Isi data untuk mendapatkan Access Code unik.</CardDescription>
-          </CardHeader>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-gray-50 via-white to-gray-50 px-4 py-8">
+      <div className="w-full max-w-sm space-y-6">
+        {!result ? (
+          <>
+            <Link to="/">
+              <Button variant="ghost" size="sm" className="gap-1">
+                <ChevronLeft className="h-4 w-4" />
+                Kembali
+              </Button>
+            </Link>
 
-          <CardContent className="space-y-4">
-            {!result ? (
-              <>
+            {/* Logo Section */}
+            <div className="text-center space-y-3">
+              <div className="flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white">
+                  <User className="h-8 w-8 text-emerald-600" />
+                </div>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Daftar Akun</h1>
+                <p className="text-sm text-muted-foreground">Masyarakat Bandung</p>
+              </div>
+            </div>
+
+            {/* Signup Card */}
+            <Card className="border-0 bg-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 -mt-8 -mr-8 opacity-5 pointer-events-none">
+                <Leaf className="h-32 w-32 text-emerald-600 rotate-45" />
+              </div>
+
+              <CardHeader className="space-y-2 relative z-10">
+                <CardTitle className="text-xl">Buat Akun Baru</CardTitle>
+                <CardDescription>Masukkan nama lengkap Anda</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4 relative z-10">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Nama</Label>
-                  <Input id="name" placeholder="Nama lengkap" value={name} onChange={(e) => setName(e.target.value)} />
+                  <Label htmlFor="name" className="text-sm font-medium">Nama Lengkap</Label>
+                  <Input
+                    id="name"
+                    placeholder="Contoh: Budi Santoso"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="h-11"
+                    disabled={isLoading}
+                  />
                 </div>
 
-                <Button className="w-full" onClick={handleSignup} disabled={!canSubmit}>
-                  {isLoading ? 'Memproses...' : 'Buat Access Code'}
+                <Button
+                  className="h-11 w-full gap-2 text-base font-semibold bg-emerald-600 hover:bg-emerald-700"
+                  onClick={handleSignup}
+                  disabled={!canSubmit}
+                >
+                  {isLoading ? 'Membuat akun...' : 'Buat Akun'}
                 </Button>
-
-                <div className="text-sm text-slate-600">
-                  Sudah punya kode?{' '}
-                  <Link to="/" className="font-medium text-brand-700 hover:text-brand-800">
-                    Login
-                  </Link>
+              </CardContent>
+            </Card>
+          </>
+        ) : (
+          <>
+            {/* Success State */}
+            <div className="text-center space-y-4">
+              <div className="flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
+                  <Check className="h-8 w-8 text-emerald-600" />
                 </div>
-              </>
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 rounded-xl border bg-emerald-50 p-4">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-700" />
-                  <div>
-                    <div className="font-semibold text-emerald-900">Pendaftaran berhasil</div>
-                    <div className="text-sm text-emerald-800">Simpan kode ini untuk login.</div>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Akun Berhasil Dibuat</h1>
+                <p className="text-sm text-muted-foreground">Simpan Access Code Anda</p>
+              </div>
+            </div>
+
+            {/* Code Card */}
+            <Card className="border-0 bg-white relative overflow-hidden">
+              <div className="absolute bottom-0 left-0 -mb-8 -ml-8 opacity-5 pointer-events-none">
+                <Leaf className="h-32 w-32 text-emerald-600 -rotate-45" />
+              </div>
+
+              <CardHeader className="space-y-2 relative z-10">
+                <CardTitle className="text-center text-base">Access Code Anda</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 relative z-10">
+                <div className="space-y-2 text-sm">
+                  <div className="text-muted-foreground">Nama: <span className="font-semibold text-foreground">{result.name}</span></div>
+                </div>
+
+                <div className="rounded-lg bg-white p-6 text-center border border-emerald-200 relative overflow-hidden">
+                  <div className="absolute -right-6 -bottom-6 opacity-5 pointer-events-none">
+                    <Copy className="h-20 w-20 text-emerald-600" />
                   </div>
-                </div>
-
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Access Code</div>
-                  <div className="mt-1 font-mono text-2xl font-semibold tracking-wider text-slate-900">
+                  <div className="text-xs text-muted-foreground mb-2 relative z-10">Kode Akses</div>
+                  <div className="font-mono text-3xl font-bold tracking-widest text-emerald-600 relative z-10">
                     {result.access_code}
                   </div>
-                  <div className="mt-1 text-xs text-slate-500">Nama: {result.name}</div>
                 </div>
 
+                <Button
+                  className="h-11 w-full gap-2 text-base font-semibold bg-emerald-600 hover:bg-emerald-700"
+                  onClick={copyToClipboard}
+                >
+                  <Copy className="h-5 w-5" />
+                  {copied ? 'Tersalin!' : 'Salin Kode'}
+                </Button>
+
+                <Card className="border-blue-200 bg-blue-50 relative overflow-hidden">
+                  <div className="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+                    <Copy className="h-20 w-20 text-blue-600" />
+                  </div>
+                  <CardContent className="p-4 text-center text-xs relative z-10">
+                    <div className="font-semibold text-blue-900 mb-1">⚠️ Simpan Dengan Aman</div>
+                    <div className="text-blue-700">
+                      Gunakan kode ini untuk login. Jangan bagikan ke orang lain.
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <Link to="/" className="block">
-                  <Button className="w-full">Kembali ke Login</Button>
+                  <Button className="h-11 w-full text-base font-semibold">
+                    Masuk dengan Kode Ini
+                  </Button>
                 </Link>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
     </div>
   );
